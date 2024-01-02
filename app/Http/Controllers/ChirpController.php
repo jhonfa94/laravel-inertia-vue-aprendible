@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Chirp;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,10 @@ class ChirpController extends Controller
      */
     public function index()
     {
-        //
+        return  Inertia::render('Chirps/Index', [
+            'title' => 'Inertia',
+            'subtitle' => 'From PHP to JS'
+        ]);
     }
 
     /**
@@ -28,7 +32,13 @@ class ChirpController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'message' => ['required', 'max:255']
+        ]);
+
+        return $request->user()->chirps()->create([
+            'message' => $request->input('message')
+        ]);
     }
 
     /**

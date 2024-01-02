@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -38,10 +39,12 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 
-Route::get('/chirps', function(){
-    return Inertia::render('Chirps/Index', [
-        'title'=> 'Inertia',
-        'subtitle' => 'From PHP to JS'
-    ]);
-})->middleware(['auth']);
+// Route::controller('chirps')->prefix('/chirps')->name('chirps.')->group(function () {
+//     Route::controller(ChirpController::class)->group(function () {
+//         Route::get('/', 'index')->name('index');
+//     });
+// })->middleware(['auth']);
 
+Route::resource('chirps', ChirpController::class)
+    ->only('index', 'store')
+    ->middleware(['auth']);;
